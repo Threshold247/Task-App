@@ -1,0 +1,62 @@
+{% from "bootstrap5/form.html" import render_form %}
+{% extends "base.html" %}
+{% block content %}
+
+<!--TODO: Display the user's name in the h1 title-->
+
+<div class="box">
+  <h1>Welcome, {{ current_user.name}}</h1>
+  <form action="{{ url_for('tasks') }}" method="post" >
+<!--    <input name="description" type="text" placeholder="Task description" required>-->
+<!--    <input name="date" type="date" placeholder="Date format MM/DD/YYYY" required>-->
+<!--    <label>Set task reminder</label>-->
+<!--    <label class="checkbox-inline">-->
+<!--      <input type="checkbox" name="reminder">-->
+<!--    </label>-->
+<!--     <div>-->
+<!--      <button type="submit" class="btn btn-primary" >Add task</button>-->
+<!--    </div>-->
+        {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+   </form>
+    <br>
+    <form >
+        <!--Make a GET request to database to show tasks-->
+    <table class="table table-bordered" style="color: white">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Description</th>
+      <th scope="col">Date</th>
+      <th scope="col" colspan="2">Options</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    {% for task in tasks %}
+
+    {% if task.user_id == current_user.id %}
+    {% if task.reminder: %}
+    <tr class="table-success">
+    {% else: %}
+    <tr>
+    {% endif %}
+      <td scope="row" ></td>
+      <td>{{ task.description }}</td>
+      <td>{{ task.date }}</td>
+      <td>
+          <a href="{{ url_for('edit_task', task_id=task.id) }}">Edit</a>
+      </td>
+      <td>
+          <a class="btn btn-danger" href="{{ url_for('delete_task', task_id=task.id) }}"> x</a>
+      </td>
+    </tr>
+     {% endif %}
+     {% endfor %}
+  </tbody>
+
+    </table>
+    </form>
+
+</div>
+{% endblock %}

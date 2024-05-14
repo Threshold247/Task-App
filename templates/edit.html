@@ -1,0 +1,23 @@
+{% extends "base.html" %} {% block content %}
+
+<!--TODO: Display the user's name in the h1 title-->
+
+<div class="box">
+  <h1>Edit your task here</h1>
+  <form action="{{ url_for('edit_task', task_id = task.id) }}" method="post" >
+    <input name="description" type="text" placeholder="{{ task.description }}">
+    <input name ="date" type="text" placeholder="Current date: {{ task.date }}">
+    <label>Set task reminder</label>
+    <label class="checkbox-inline">
+      {% if task.reminder: %}
+      <input type="checkbox" name="reminder" checked>
+      {% else: %}
+      <input type="checkbox" name="reminder">
+      {% endif %}
+    </label>
+     <div>
+      <button type="submit" class="btn btn-primary" >Edit task</button>
+    </div>
+   </form>
+</div>
+{% endblock %}
